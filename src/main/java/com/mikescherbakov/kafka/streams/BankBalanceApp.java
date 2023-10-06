@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -145,6 +146,10 @@ public class BankBalanceApp {
         config.setProperty("key.serializer", StringSerializer.class.getName());
         config.setProperty("value.serializer", StringSerializer.class.getName());
         config.setProperty(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, StreamsConfig.EXACTLY_ONCE_V2);
+        config.setProperty(ProducerConfig.ACKS_CONFIG, "all");
+        config.setProperty(ProducerConfig.RETRIES_CONFIG, "3");
+        config.setProperty(ProducerConfig.LINGER_MS_CONFIG, "1");
+        config.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
         return config;
     }
 }
